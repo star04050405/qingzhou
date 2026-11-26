@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>qingzhou. 信美东方第一州</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<link rel="icon" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon-180.png">
+<link rel="manifest" href="manifest.json">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{font-family:-apple-system,"PingFang SC","Noto Sans SC",sans-serif;background:#EFECE4;color:#2B2924;line-height:1.8;-webkit-font-smoothing:antialiased}
+.wrap{max-width:680px;margin:0 auto;padding:0 20px 80px}
+.serif{font-family:Georgia,"Songti SC",serif}
+/* hero */
+.hero{padding:56px 0 22px;text-align:center;border-bottom:1px solid #D8D2C4;position:relative}
+.city{font-size:.62rem;letter-spacing:.5em;color:#8A8065}
+h1{font-size:2.4rem;font-weight:600;margin:10px 0 2px;letter-spacing:.06em}
+.en{font-size:.68rem;color:#8A8065;font-family:Courier New,monospace;letter-spacing:.3em}
+.slog{margin-top:10px;font-size:.86rem;color:#6E685A}
+.slog b{color:#A8332A}
+.stats{display:flex;justify-content:center;gap:30px;margin-top:16px}
+.st{text-align:center}
+.st .v{font-size:1.3rem;font-weight:700}
+.st .v.r{color:#A8332A}
+.st .v.g{color:#8A8065}
+.st .k{font-size:.58rem;color:#8A8065;letter-spacing:.18em}
+/* 地图 */
+#map{height:360px;border-radius:10px;margin:18px 0 6px;border:1px solid #D8D2C4;z-index:1}
+/* chips */
+.chips{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;padding:10px 0 4px}
+.chip{border:1px solid #C9C2B0;background:#fff;color:#6E685A;font-size:.72rem;padding:6px 14px;border-radius:99px;cursor:pointer;font-family:inherit}
+.chip.on{background:#2B2924;color:#EFECE4;border-color:#2B2924}
+/* 分组 */
+.sect{margin-top:26px}
+.sh{display:flex;align-items:baseline;gap:10px;padding-bottom:6px}
+.sh h2{font-size:1.1rem;font-weight:700;letter-spacing:.04em}
+.sh .n{font-size:.62rem;color:#8A8065;font-family:Courier New,monospace}
+.sp{background:#F7F5EE;border:1px solid #D8D2C4;border-radius:9px;margin-bottom:10px;overflow:hidden;transition:border-color .2s}
+.sp.lit{border-color:#C9A25C;background:#FBF7EA}
+.sp .hd{padding:13px 16px;cursor:pointer;display:flex;align-items:center;gap:10px}
+.sp .dot{width:9px;height:9px;border-radius:50%;border:1.6px solid #C9C2B0;flex-shrink:0;cursor:pointer}
+.sp.lit .dot{background:#C9A25C;border-color:#C9A25C}
+.sp .tt{flex:1;min-width:0}
+.sp .t{font-size:.95rem;font-weight:700}
+.sp .s{font-size:.68rem;color:#8A8065;margin-top:1px}
+.sp .pr{font-size:.62rem;color:#A8332A;white-space:nowrap;font-weight:600}
+.sp .ar{font-size:.7rem;color:#B5AC97;transition:.2s}
+.sp.open .ar{transform:rotate(90deg)}
+.sp .bd{display:none;padding:0 16px 14px;font-size:.8rem;color:#57513F}
+.sp.open .bd{display:block}
+.sp .meta{font-size:.7rem;color:#8A8065;margin-bottom:6px}
+.sp .act{margin-top:10px;display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:1px solid #C9C2B0;background:#fff;border-radius:99px;font-size:.72rem;padding:7px 14px;font-family:inherit;color:#57513F;cursor:pointer}
+.btn.gold{background:#C9A25C;border-color:#C9A25C;color:#fff}
+.btn.red{background:#A8332A;border-color:#A8332A;color:#fff}
+/* 井塘彩蛋卡 */
+.jt{margin:8px 16px 14px;background:#2E2A22;border-radius:8px;padding:13px 15px;color:#EFE8D2;font-size:.76rem}
+.jt b{color:#E5C88C}
+.jt a{color:#E5C88C;text-decoration:none;border-bottom:1px solid #E5C88C66}
+/* 行程 */
+.plan{background:#F7F5EE;border:1px solid #D8D2C4;border-radius:9px;padding:14px 16px;margin-bottom:10px}
+.plan .pt{display:flex;align-items:baseline;gap:8px}
+.plan .pt h3{font-size:.92rem;font-weight:700}
+.plan .tg{font-size:.58rem;background:#A8332A;color:#fff;border-radius:99px;padding:2px 9px;letter-spacing:.1em}
+.plan ol{margin:8px 0 0 0;padding:0;list-style:none;counter-reset:s}
+.plan ol li{counter-increment:s;font-size:.78rem;color:#57513F;padding:5px 0 5px 26px;position:relative;border-bottom:1px dashed #DDD7C7}
+.plan ol li:last-child{border:0}
+.plan ol li::before{content:counter(s,decimal-leading-zero);position:absolute;left:0;top:7px;font-size:.6rem;color:#A8332A;font-family:Courier New,monospace}
+/* 美食 */
+.food{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.fd{background:#F7F5EE;border:1px solid #D8D2C4;border-radius:9px;padding:11px 13px}
+.fd .t{font-size:.82rem;font-weight:700}
+.fd .d{font-size:.68rem;color:#6E685A;margin-top:3px}
+/* tips */
+.tips{background:#2E2A22;border-radius:10px;padding:16px 18px;color:#D8D2C4}
+.tips h3{font-size:.86rem;color:#E5C88C;letter-spacing:.16em;margin-bottom:8px}
+.tips p{font-size:.74rem;padding:5px 0 5px 20px;position:relative;border-bottom:1px dashed #454032}
+.tips p:last-child{border:0}
+.tips p::before{content:'✦';position:absolute;left:0;color:#C9A25C;font-size:.62rem;top:8px}
+/* 打卡条 */
+.prog{position:fixed;bottom:0;left:0;right:0;background:#FFFFFFEE;backdrop-filter:blur(12px);border-top:1px solid #D8D2C4;padding:11px 20px calc(11px + env(safe-area-inset-bottom));z-index:50;display:flex;align-items:center;gap:12px;justify-content:center}
+.prog .bar{width:min(300px,42vw);height:5px;background:#DDD7C7;border-radius:3px;overflow:hidden}
+.prog .fill{height:100%;background:#C9A25C;border-radius:3px;transition:.4s}
+.prog .txt{font-size:.72rem;color:#57513F;white-space:nowrap}
+.prog .txt b{color:#A8332A}
+#toast{position:fixed;left:50%;bottom:76px;transform:translateX(-50%) translateY(14px);background:#2B2924;color:#EFECE4;font-size:.76rem;padding:9px 18px;border-radius:99px;opacity:0;transition:.3s;pointer-events:none;z-index:99}
+#toast.on{opacity:1;transform:translateX(-50%)}
+#mapbox{margin:18px 0 6px;border:1px solid #D8D2C4;border-radius:10px;overflow:hidden}
+#svmap{display:block;width:100%}
+.mapnote{font-size:.6rem;color:#8A8065;text-align:center;padding:6px;background:#F7F5EE;border-top:1px dashed #D8D2C4}
+.pin{cursor:pointer}
+.pin text{font-size:10px;fill:#3B362B;font-weight:600}
+.pin.lit circle{fill:#C9A25C!important;stroke:#A8834A!important}
+.pin .halo{opacity:0}
+.pin.lit .halo{opacity:.35}
+</style>
+</head>
+<body>
+<div class="wrap">
+ <header class="hero">
+  <div class="city">古 九 州 之 一 · 山 东 · 潍 坊</div>
+  <h1 class="serif">青州</h1>
+  <div class="en">QINGZHOU · SHANDONG</div>
+  <div class="slog serif">「信美东方<b>第一州</b>」—— 两千年建城史，一座活着的古城</div>
+  <div class="stats">
+   <div class="st"><div class="v r">12</div><div class="k">处景点</div></div>
+   <div class="st"><div class="v">10</div><div class="k">种必吃</div></div>
+   <div class="st"><div class="v g">3</div><div class="k">条路线</div></div>
+   <div class="st"><div class="v" id="pdone">0</div><div class="k">我已去</div></div>
+  </div>
+ </header>
+
+ <div id="mapbox"><svg id="svmap" viewBox="0 0 340 372" role="img" aria-label="青州景点手绘示意图">
+  <defs><filter id="pp"><feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0.55 0 0 0 0 0.52 0 0 0 0 0.45 0 0 0 0.05 0"/><feComposite operator="over" in2="SourceGraphic"/></filter></defs>
+  <rect width="340" height="372" fill="#F2EFE6"/>
+  <g opacity=".5" stroke="#B9B2A0" stroke-width="1" fill="none">
+    <path d="M0,60 C60,70 120,50 180,66 C240,80 300,60 340,72" stroke-dasharray="1 0"/>
+    <path d="M0,150 C80,140 160,160 240,150 C290,144 320,156 340,150"/>
+    <path d="M0,240 C70,250 150,236 220,246 C280,254 320,244 340,248"/>
+    <path d="M0,320 C90,312 180,326 260,318 C300,314 330,322 340,320"/>
+  </g>
+  <path d="M282,8 C276,60 296,110 288,150 C282,190 302,230 296,268 C292,298 306,330 300,364 L312,364 C318,328 302,296 308,266 C314,228 296,190 300,148 C308,108 288,62 296,8 Z" fill="#BCD2D8" opacity=".75"/>
+  <text x="303" y="352" font-size="9" fill="#7FA0A8" font-family="Courier New">弥 河</text>
+  <path d="M212,30 L292,30 L296,88 L268,112 L228,104 L214,62 Z" fill="#D9D3C2" opacity=".85"/>
+  <path d="M212,30 L292,30 L296,88 L268,112 L228,104 L214,62 Z" fill="none" stroke="#8A8065" stroke-width="1.4"/>
+  <g stroke="#A39A85" stroke-width="1.1" opacity=".8">
+    <line x1="214" y1="62" x2="294" y2="60"/><line x1="220" y1="88" x2="290" y2="86"/>
+    <line x1="248" y1="31" x2="252" y2="103"/><line x1="276" y1="31" x2="278" y2="92"/>
+  </g>
+  <text x="224" y="22" font-size="9.5" fill="#6E685A" font-weight="700" font-family="Georgia,serif">青 州 古 城</text>
+  <g fill="#C5BCA6" opacity=".85">
+    <path d="M28,196 l14,-16 12,14 12,-18 14,16 12,-12 10,14 8,-8" stroke="#B0A78E" stroke-width="1.2" fill="none"/>
+    <path d="M96,246 l16,-14 12,12 14,-16 12,14" stroke="#B0A78E" stroke-width="1.2" fill="none"/>
+    <path d="M20,286 l18,-14 14,14 12,-12" stroke="#B0A78E" stroke-width="1.2" fill="none"/>
+  </g>
+  <text x="26" y="232" font-size="9" fill="#8A8065">西南群山</text>
+  <text x="30" y="352" font-size="9" fill="#8A8065" font-family="Courier New">N</text>
+  <path d="M30,356 l0,-12 M30,344 l-4,7 M30,344 l4,7" stroke="#8A8065" stroke-width="1" fill="none"/>
+  <g id="svpins"></g>
+</svg>
+<div class="mapnote">◎ 手绘示意 · 不作导航用 · 实际导航请用地图 App</div></div>
+ <div class="chips" id="chips">
+  <button class="chip on" data-g="all">全部</button>
+  <button class="chip" data-g="city">古城人文</button>
+  <button class="chip" data-g="mount">山岳自然</button>
+  <button class="chip" data-g="village">古村</button>
+ </div>
+
+ <div id="lists"></div>
+
+ <div class="sect">
+  <div class="sh"><h2>路线 · 按天数抄作业</h2><span class="n">3 ROUTES</span></div>
+  <div id="plans"></div>
+ </div>
+
+ <div class="sect">
+  <div class="sh"><h2>必吃 · 从 5 元早餐到百年糕点</h2><span class="n">10 MUST-EAT</span></div>
+  <div class="food" id="foods"></div>
+ </div>
+
+ <div class="sect">
+  <div class="sh"><h2>贴士 · 蹲票/穿衣/带现金</h2><span class="n">7 TIPS</span></div>
+  <div class="tips" id="tips"></div>
+ </div>
+
+ <div style="text-align:center;padding:40px 0 0;font-size:.62rem;color:#8A8065;letter-spacing:.1em">
+  票价与开放时间据公开渠道整理（2026-11），以景区当日公示为准<br>qingzhou. · 为愿意慢慢走的人
+ </div>
+</div>
+
+<div class="prog">
+ <span class="txt">去过 <b id="pn">0</b>/12</span>
+ <div class="bar"><div class="fill" id="pfill"></div></div>
+ <span class="txt" id="pmotion">从古城开始</span>
+</div>
+<div id="toast"></div>
+<script src="data.js"></script>
+<script>
+var KEY='qingzhou_visits';
+var VIS={};
+try{VIS=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
+function $(i){return document.getElementById(i)}
+var GRPN={city:'古城人文',mount:'山岳自然',village:'古村'};
+var curG='all';
+function lit(){return Object.keys(VIS).length}
+function render(){
+ var groups=curG==='all'?['city','mount','village']:[curG];
+ $('lists').innerHTML=groups.map(function(g){
+  var arr=SPOTS.filter(function(s){return s.grp===g});
+  return '<div class="sect"><div class="sh"><h2>'+GRPN[g]+'</h2><span class="n">'+arr.length+' SPOTS</span></div>'
+   +arr.map(function(s){return card(s)}).join('')+'</div>';
+ }).join('');
+}
+function card(s){
+ var is=!!VIS[s.id];
+ var jt=(s.link==='jt')?'<div class="jt">🪵 <b>彩蛋</b>：井塘古村的导游词你整篇背过——手卡和全文都在你的家族里。进村前打开 <a href="https://star04050405.github.io/cue/" target="_blank">cue. 手卡</a> 复习一遍，或者逛完回来 <a href="https://star04050405.github.io/visitjt/" target="_blank">看游客版</a> 对照走了哪些站。</div>':'';
+ return '<div class="sp'+(is?' lit':'')+'" id="sp_'+s.id+'">'
+  +'<div class="hd" onclick="toggle(\''+s.id+'\')">'
+  +'<span class="dot" onclick="mark(event,\''+s.id+'\')" title="标记去过"></span>'
+  +'<span class="tt"><div class="t">'+s.t+(s.must?' <span style="font-size:.58rem;color:#A8332A">★必</span>':'')+'</div><div class="s">'+s.sub+'</div></span>'
+  +'<span class="pr">'+s.price+'</span><span class="ar">›</span>'
+  +'</div>'
+  +'<div class="bd"><div class="meta">🕐 '+s.time+'</div>'+s.d+jt
+  +'<div class="act"><button class="btn gold'+(is?' on':'')+'" onclick="mark(event,\''+s.id+'\')">'+(is?'✓ 已去过':'○ 标记去过')+'</button>'
+  +'<button class="btn" onclick="jumpMap('+s.lat+','+s.lng+',\''+s.t+'\')">📍 在地图上看</button></div></div>'
+  +'</div>';
+}
+function toggle(id){var el=$('sp_'+id);el.classList.toggle('open')}
+function mark(e,id){
+ e.stopPropagation();
+ if(VIS[id]){delete VIS[id]}else{VIS[id]=1}
+ localStorage.setItem(KEY,JSON.stringify(VIS));
+ render();paint();drawPins();
+ if(VIS[id]){
+  var s=SPOTS.find(function(x){return x.id===id});
+  toast('✓ '+s.t+' · 已去过');
+ }
+}
+function paint(){
+ var n=lit();
+ $('pn').textContent=n;$('pdone').textContent=n;
+ $('pfill').style.width=(n/SPOTS.length*100)+'%';
+ $('pmotion').textContent=n===0?'从古城开始':(n>=SPOTS.length?'古九州通关 ✦':(n<4?'第一步迈出去了':(n<8?'古城和山都熟了':'还差几处就齐了')));
+}
+function jumpMap(lat,lng,t){
+ document.getElementById('map').scrollIntoView({behavior:'smooth'});
+ if(window._map){window._map.setView([lat,lng],13);setTimeout(function(){openPopupByTitle(t)},400)}
+}
+var mkrs=[];
+function drawMarkers(){
+ mkrs.forEach(function(m){window._map&&window._map.removeLayer(m)});mkrs=[];
+ SPOTS.forEach(function(s){
+  var c=VIS[s.id]?'#C9A25C':'#A8332A';
+  var m=L.circleMarker([s.lat,s.lng],{radius:VIS[s.id]?8:6,color:c,weight:2,fillColor:VIS[s.id]?'#C9A25C':'#FFFFFF',fillOpacity:.95}).addTo(window._map);
+  m.bindTooltip(s.t,{direction:'top'});
+  m.on('click',function(){toggle(s.id);var el=$('sp_'+s.id);document.querySelectorAll('.sp.open').forEach(function(x){if(x!==el)x.classList.remove('open')});el.scrollIntoView({behavior:'smooth',block:'center'})});
+  mkrs.push(m);
+ });
+}
+function openPopupByTitle(){}
+/* SVG pins */
+function proj(lat,lng){return [ (lng-118.30)/0.24*320+2, (36.73-lat)/0.22*360+2 ];}
+function drawPins(){
+ var g=document.getElementById('svpins');
+ g.innerHTML=SPOTS.map(function(sp){
+  var xy=proj(sp.lat,sp.lng),x=xy[0],y=xy[1];
+  var is=!!VIS[sp.id];
+  return '<g class="pin'+(is?' lit':'')+'" id="pin_'+sp.id+'" transform="translate('+x+','+y+')" onclick="pinGo(\''+sp.id+'\')">'
+   +'<circle class="halo" r="12" fill="#C9A25C"/>'
+   +'<circle r="'+(is?7:5.5)+'" fill="'+(is?'#C9A25C':'#FFFFFF')+'" stroke="'+(is?'#A8834A':'#A8332A')+'" stroke-width="2"/>'
+   +'<text x="9" y="4">'+sp.t+'</text></g>';
+ }).join('');
+}
+function pinGo(id){
+ toggle(id);
+ document.querySelectorAll('.sp.open').forEach(function(x){if(x.id!=='sp_'+id)x.classList.remove('open')});
+ var el=document.getElementById('sp_'+id);
+ el.scrollIntoView({behavior:'smooth',block:'center'});
+ toast(SPOTS.find(function(x){return x.id===id}).t);
+}
+function jumpMap(lat,lng,t){
+ var id=SPOTS.find(function(x){return x.t===t}).id;
+ document.getElementById('mapbox').scrollIntoView({behavior:'smooth'});
+ setTimeout(function(){pinGo(id)},350);
+}
+drawPins();
+document.querySelectorAll('.chip').forEach(function(c){
+ c.onclick=function(){document.querySelectorAll('.chip').forEach(function(x){x.classList.remove('on')});c.classList.add('on');curG=c.dataset.g;render();paint()};
+});
+document.getElementById('plans').innerHTML=PLAN.map(function(p){
+ return '<div class="plan"><div class="pt"><h3>'+p.t+'</h3><span class="tg">'+p.tag+'</span></div><ol>'+p.steps.map(function(st){return '<li>'+st+'</li>'}).join('')+'</ol></div>';
+}).join('');
+document.getElementById('foods').innerHTML=FOOD.map(function(f){return '<div class="fd"><div class="t">'+f.t+'</div><div class="d">'+f.d+'</div></div>'}).join('');
+document.getElementById('tips').innerHTML=TIPS.map(function(t){return '<p>'+t+'</p>'}).join('');
+render();paint();
+function toast(m){var t=$('toast');t.textContent=m;t.classList.add('on');setTimeout(function(){t.classList.remove('on')},1500)}
+</script>
+</body>
+</html>
